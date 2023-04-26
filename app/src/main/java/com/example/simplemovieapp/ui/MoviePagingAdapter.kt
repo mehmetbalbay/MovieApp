@@ -6,11 +6,14 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.simplemovieapp.R
 import com.example.simplemovieapp.data.dto.MovieResponse
 import com.example.simplemovieapp.databinding.RecyclerUpcomingItemBinding
 import com.example.simplemovieapp.util.Config
 import com.example.simplemovieapp.util.circleProgressDrawable
+import com.example.simplemovieapp.util.showView
 
 class MoviePagingAdapter(private val onItemClick: (MovieResponse.Result) -> Unit) :
     PagingDataAdapter<MovieResponse.Result, RecyclerView.ViewHolder>(diffCallback) {
@@ -49,10 +52,18 @@ class MoviePagingAdapter(private val onItemClick: (MovieResponse.Result) -> Unit
             binding.textViewTitle.text = item.title
 
             item.backdropPath?.let {
-                Glide.with(itemView.context).load(Config.IMAGE_URL + it)
+                Glide.with(itemView.context).load(Config.IMAGE_URL + item.backdropPath)
                     .apply(RequestOptions().override(400, 400).centerInside())
                     .placeholder(itemView.context.circleProgressDrawable())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.popcorn)
                     .into(binding.imageViewPosterPath)
+
+                binding.imageViewPosterPath.showView(true)
+                binding.imageViewEmptyPoster.showView(false)
+            } ?: kotlin.run {
+                binding.imageViewPosterPath.showView(false)
+                binding.imageViewEmptyPoster.showView(true)
             }
         }
     }
