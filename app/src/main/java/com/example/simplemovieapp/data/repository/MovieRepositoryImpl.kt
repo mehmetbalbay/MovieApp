@@ -1,7 +1,7 @@
 package com.example.simplemovieapp.data.repository
 
 import androidx.paging.PagingData
-import com.example.simplemovieapp.data.dto.MovieResponse
+import com.example.simplemovieapp.data.dto.MoviesResponse
 import com.example.simplemovieapp.data.source.RemoteDataSource
 import com.example.simplemovieapp.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
 ) : MovieRepository {
 
-    override fun getUpcomingMovies(): Flow<PagingData<MovieResponse.Result>> {
+    override fun getUpcomingMovies(): Flow<PagingData<MoviesResponse.Result>> {
         return remoteDataSource.getUpcomingMovies()
     }
 

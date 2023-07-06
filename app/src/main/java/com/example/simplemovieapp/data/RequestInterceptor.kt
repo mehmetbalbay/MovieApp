@@ -3,6 +3,7 @@ package com.example.simplemovieapp.data
 import com.example.simplemovieapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
+import timber.log.Timber
 
 class RequestInterceptor : Interceptor {
 
@@ -15,6 +16,9 @@ class RequestInterceptor : Interceptor {
 
         val requestBuilder = originalRequest.newBuilder().url(url)
         val request = requestBuilder.build()
+
+        Timber.e(request.url.toString())
+
         return chain.proceed(request)
     }
 

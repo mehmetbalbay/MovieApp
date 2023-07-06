@@ -3,14 +3,14 @@ package com.example.simplemovieapp.data.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.simplemovieapp.data.api.MovieApi
-import com.example.simplemovieapp.data.dto.MovieResponse
+import com.example.simplemovieapp.data.dto.MoviesResponse
 import retrofit2.HttpException
 import java.io.IOException
 
 class MoviePagingDataSource(private val movieApi: MovieApi) :
-    PagingSource<Int, MovieResponse.Result>() {
+    PagingSource<Int, MoviesResponse.Result>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResponse.Result> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MoviesResponse.Result> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
             val response = movieApi.getUpcomingMovies(page)
@@ -27,7 +27,7 @@ class MoviePagingDataSource(private val movieApi: MovieApi) :
     }
 
 
-    override fun getRefreshKey(state: PagingState<Int, MovieResponse.Result>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, MoviesResponse.Result>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

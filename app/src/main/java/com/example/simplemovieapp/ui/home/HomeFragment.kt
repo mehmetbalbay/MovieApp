@@ -1,13 +1,13 @@
 package com.example.simplemovieapp.ui.home
 
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.simplemovieapp.R
 import com.example.simplemovieapp.databinding.FragmentHomeBinding
-import com.example.simplemovieapp.ui.MoviePagingAdapter
 import com.example.simplemovieapp.ui.base.BaseFragment
+import com.example.simplemovieapp.ui.home.movie.MovieFragment
+import com.example.simplemovieapp.ui.home.mylist.MyListFragment
+import com.example.simplemovieapp.ui.home.tvshow.TvShowFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
@@ -16,20 +16,29 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override val viewModelClass: Class<HomeViewModel> = HomeViewModel::class.java
 
+    private var homePagerAdapter: HomePagerAdapter? = null
+
     override fun initUI() {
-        val movieAdapter = MoviePagingAdapter(onItemClick = {
-            findNavController().navigate(R.id.action_homeFragment_to_movieDetailFragment)
-        })
+        setHomePager()
 
-        binding.movieListRecyclerView.apply {
-            adapter = movieAdapter
-        }
+        setProfileImage()
+    }
 
-        viewModel.upcomingMovie.observe(viewLifecycleOwner) {
-            lifecycleScope.launch {
-                movieAdapter.submitData(it)
-            }
-        }
+    private fun setHomePager() {
+        val fragments = listOf(
+            PagerFragment("Movie", MovieFragment.newInstance()),
+            PagerFragment("TvShow", TvShowFragment.newInstance()),
+            PagerFragment("MyList", MyListFragment.newInstance())
+        )
+
+        homePagerAdapter = HomePagerAdapter(requireActivity().supportFragmentManager, fragments)
+        binding.viewPagerHome.adapter = homePagerAdapter
+        binding.tabLayoutHome.setupWithViewPager(binding.viewPagerHome)
+    }
+
+    private fun setProfileImage() {
+        Glide.with(this).load(R.drawable.profile_placeholder).circleCrop()
+            .into(binding.imageViewProfile)
     }
 
 }

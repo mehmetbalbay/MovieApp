@@ -9,14 +9,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.simplemovieapp.R
-import com.example.simplemovieapp.data.dto.MovieResponse
+import com.example.simplemovieapp.data.dto.MoviesResponse
 import com.example.simplemovieapp.databinding.RecyclerUpcomingItemBinding
 import com.example.simplemovieapp.util.Config
 import com.example.simplemovieapp.util.circleProgressDrawable
 import com.example.simplemovieapp.util.showView
 
-class MoviePagingAdapter(private val onItemClick: (MovieResponse.Result) -> Unit) :
-    PagingDataAdapter<MovieResponse.Result, RecyclerView.ViewHolder>(diffCallback) {
+class MoviePagingAdapter(private val onItemClick: (MoviesResponse.Result) -> Unit) :
+    PagingDataAdapter<MoviesResponse.Result, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -48,38 +48,36 @@ class MoviePagingAdapter(private val onItemClick: (MovieResponse.Result) -> Unit
             }
         }
 
-        fun bind(item: MovieResponse.Result) {
+        fun bind(item: MoviesResponse.Result) {
             binding.textViewTitle.text = item.title
 
-            item.backdropPath?.let {
-                Glide.with(itemView.context).load(Config.IMAGE_URL + item.backdropPath)
-                    .apply(RequestOptions().override(400, 400).centerInside())
+            item.posterPath?.let {
+                Glide.with(itemView.context).load(Config.IMAGE_URL + item.posterPath)
+                    .apply(RequestOptions().override(400, 400))
                     .placeholder(itemView.context.circleProgressDrawable())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .error(R.drawable.popcorn)
                     .into(binding.imageViewPosterPath)
 
                 binding.imageViewPosterPath.showView(true)
-                binding.imageViewEmptyPoster.showView(false)
             } ?: kotlin.run {
                 binding.imageViewPosterPath.showView(false)
-                binding.imageViewEmptyPoster.showView(true)
             }
         }
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<MovieResponse.Result>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<MoviesResponse.Result>() {
             override fun areItemsTheSame(
-                oldItem: MovieResponse.Result,
-                newItem: MovieResponse.Result
+                oldItem: MoviesResponse.Result,
+                newItem: MoviesResponse.Result
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: MovieResponse.Result,
-                newItem: MovieResponse.Result
+                oldItem: MoviesResponse.Result,
+                newItem: MoviesResponse.Result
             ): Boolean {
                 return oldItem == newItem
             }

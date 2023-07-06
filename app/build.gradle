@@ -99,6 +99,12 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_layout_version"
 
+    // Youtube Player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.0.0'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
 }
 
 // Allow references to generated code

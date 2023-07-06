@@ -1,53 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movieResult"
+            type="com.example.simplemovieapp.data.dto.MoviesResponse.Result" />
+    </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@android:color/transparent"
+        android:orientation="vertical"
+        app:cardCornerRadius="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/imageViewEmptyPoster"
-                android:layout_width="wrap_content"
-                android:layout_height="320dp"
-                android:src="@drawable/popcorn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/theme_background">
 
             <ImageView
                 android:id="@+id/imageViewPosterPath"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
+                moviePosterPath="@{movieResult.backdropPath}"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/popcorn" />
 
             <View
                 android:id="@+id/viewBackTitle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="#80000000"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/imageViewPosterPath"
                 app:layout_constraintTop_toTopOf="@id/imageViewPosterPath"
                 app:layout_constraintVertical_bias="1" />
 
             <TextView
                 android:id="@+id/textViewTitle"
+                movieTitle="@{movieResult.title}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/viewBackTitle"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/viewBackTitle" />
+                app:layout_constraintTop_toBottomOf="@id/viewBackTitle"
+                tools:text="November November November November November November November November November November November" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
